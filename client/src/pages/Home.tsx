@@ -1,4 +1,4 @@
-import { ArrowRight, Users, Cog } from "lucide-react";
+import { Users, Cog } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 
@@ -85,8 +85,12 @@ export default function Home() {
             <h2 className="text-2xl md:text-3xl font-bold text-primary mb-2" style={displayStyle}>
               艰苦卓绝
             </h2>
-            <h1 className="text-6xl md:text-8xl font-bold leading-tight" style={displayStyle}>
-              <span className="text-glow">飞升者行动</span>
+            <h1 className="text-6xl md:text-8xl font-bold leading-tight flicker-text" style={{
+              fontFamily: "'FZChaoZTJW', sans-serif",
+              color: "#00d4ff",
+              textShadow: "0 0 10px rgba(0, 212, 255, 0.5), 0 0 20px rgba(0, 212, 255, 0.3)",
+            }}>
+              飞升者行动
             </h1>
           </div>
 
@@ -98,14 +102,13 @@ export default function Home() {
             <Button
               size="lg"
               className="btn-tech"
-              onClick={() => document.getElementById("join")?.scrollIntoView({ behavior: "smooth" })}
+              onClick={() => window.location.href = "/milestones"}
             >
-              了解更多 <ArrowRight className="ml-2 w-4 h-4" />
+              里程碑
             </Button>
             <Button
               size="lg"
-              variant="outline"
-              className="border-primary/50 text-primary hover:bg-primary/10"
+              className="btn-tech"
               onClick={() => window.location.href = "/turning-point"}
             >
               转折点

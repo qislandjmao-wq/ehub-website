@@ -1,6 +1,14 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* Custom Font - FZChaoZTJW */
+@font-face {
+  font-family: 'FZChaoZTJW';
+  src: url('/fonts/FZChaoZTJW_DB.TTF') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 /* Import tech-forward fonts */
@@ -237,6 +245,35 @@
   /* Color utilities using CSS variables */
   .text-neon-green {
     color: #39ff14;
+  }
+
+  /* Flickering animation for broken light bulb effect */
+  @keyframes flicker {
+    0% { opacity: 1; }
+    5% { opacity: 0.8; }
+    10% { opacity: 1; }
+    15% { opacity: 0.9; }
+    20% { opacity: 1; }
+    25% { opacity: 0.7; }
+    30% { opacity: 1; }
+    35% { opacity: 0.95; }
+    40% { opacity: 1; }
+    45% { opacity: 0.85; }
+    50% { opacity: 1; }
+    55% { opacity: 0.9; }
+    60% { opacity: 1; }
+    65% { opacity: 0.8; }
+    70% { opacity: 1; }
+    75% { opacity: 0.92; }
+    80% { opacity: 1; }
+    85% { opacity: 0.88; }
+    90% { opacity: 1; }
+    95% { opacity: 0.91; }
+    100% { opacity: 1; }
+  }
+
+  .flicker-text {
+    animation: flicker 3s infinite;
   }
 
   @media (min-width: 640px) {

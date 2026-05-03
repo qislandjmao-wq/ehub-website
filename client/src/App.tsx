@@ -6,6 +6,8 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
 import TurningPoint from "./pages/TurningPoint";
+import Milestones from "./pages/Milestones";
+import FeishengZheXingdong from "./pages/FeishengZheXingdong";
 
 
 function Router() {
@@ -13,6 +15,8 @@ function Router() {
     <Switch>
       <Route path={"/"} component={Home} />
       <Route path={"/turning-point"} component={TurningPoint} />
+      <Route path={"/milestones"} component={Milestones} />
+      <Route path={"/milestones/feisheng-zhe-xingdong"} component={FeishengZheXingdong} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
