@@ -1,5 +1,6 @@
 import { ArrowLeft, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useRoute } from "@/contexts/RouteContext";
 
 /**
  * Turning Point Page - 转折点
@@ -18,6 +19,8 @@ const techStyle = {
 };
 
 export default function TurningPoint() {
+  const { navigateTo } = useRoute();
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Navigation Bar */}
@@ -26,7 +29,7 @@ export default function TurningPoint() {
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => window.history.back()}
+            onClick={() => navigateTo("home")}
             className="text-primary hover:text-primary/80"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
@@ -80,7 +83,7 @@ export default function TurningPoint() {
               <Button
                 variant="outline"
                 className="border-primary/50 text-primary hover:bg-primary/10"
-                onClick={() => window.history.back()}
+                onClick={() => navigateTo("home")}
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 返回首页

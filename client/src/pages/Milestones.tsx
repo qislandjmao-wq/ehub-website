@@ -2,6 +2,7 @@ import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { toast } from "sonner";
+import { useRoute } from "@/contexts/RouteContext";
 
 /**
  * Milestones Page - 里程碑目录
@@ -15,7 +16,7 @@ const displayStyle = {
 };
 
 const milestonesList = [
-  { name: "飞升者行动", path: "/milestones/feisheng-zhe-xingdong" },
+  { name: "飞升者行动", page: "feisheng-zhe-xingdong" as const },
   { name: "非攻", path: null },
   { name: "科波菲尔", path: null },
   { name: "临危-末日", path: null },
@@ -30,10 +31,11 @@ const milestonesList = [
 
 export default function Milestones() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const { navigateTo } = useRoute();
 
   const handleMilestoneClick = (milestone: typeof milestonesList[0], index: number) => {
-    if (milestone.path) {
-      window.location.href = milestone.path;
+    if (milestone.page) {
+      navigateTo(milestone.page);
     } else {
       toast.info("历史久远，难以查证");
     }
@@ -47,7 +49,7 @@ export default function Milestones() {
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => window.history.back()}
+            onClick={() => navigateTo("home")}
             className="text-primary hover:text-primary/80"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
@@ -93,13 +95,13 @@ export default function Milestones() {
                     <span
                       className="text-lg font-bold"
                       style={{
-                        color: milestone.path ? "#00d4ff" : "#a0afc0",
+                        color: milestone.page ? "#00d4ff" : "#a0afc0",
                         fontFamily: "Orbitron, sans-serif",
                       }}
                     >
                       {milestone.name}
                     </span>
-                    {milestone.path && (
+                    {milestone.page && (
                       <span className="text-xs text-neon-green" style={{ fontFamily: "Space Mono, monospace" }}>
                         →
                       </span>
@@ -117,7 +119,7 @@ export default function Milestones() {
               <Button
                 variant="outline"
                 className="border-primary/50 text-primary hover:bg-primary/10"
-                onClick={() => window.history.back()}
+                onClick={() => navigateTo("home")}
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 返回首页

@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Cog } from "lucide-react";
 import IntroGate from "@/components/IntroGate";
 import { useMusic } from "@/contexts/MusicContext";
+import { useRoute } from "@/contexts/RouteContext";
 
 /**
  * Home Page - 艰苦卓绝 Minecraft Server
@@ -26,6 +27,7 @@ export default function Home() {
   const [scrollY, setScrollY] = useState(0);
   const [showGate, setShowGate] = useState(true);
   const { isPlaying, toggleMusic } = useMusic();
+  const { navigateTo } = useRoute();
 
   useEffect(() => {
     // 设置页面标题和描述
@@ -153,7 +155,7 @@ export default function Home() {
             <Button
               size="lg"
               className="btn-tech text-sm sm:text-base"
-              onClick={() => window.location.href = "/milestones"}
+              onClick={() => navigateTo("milestones")}
               style={{ fontWeight: 900, fontFamily: "Arial, sans-serif" }}
             >
               里程碑
@@ -161,7 +163,7 @@ export default function Home() {
             <Button
               size="lg"
               className="btn-tech text-sm sm:text-base"
-              onClick={() => window.location.href = "/turning-point"}
+              onClick={() => navigateTo("turning-point")}
               style={{ fontWeight: 900, fontFamily: "Arial, sans-serif" }}
             >
               转折点

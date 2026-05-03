@@ -1,48 +1,70 @@
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import NotFound from "@/pages/NotFound";
-import { Route, Switch } from "wouter";
-import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { MusicProvider } from "./contexts/MusicContext";
+import { RouteProvider, useRoute } from "./contexts/RouteContext";
 import HackerCodeEffect from "./components/HackerCodeEffect";
 import Home from "./pages/Home";
 import TurningPoint from "./pages/TurningPoint";
 import Milestones from "./pages/Milestones";
 import FeishengZheXingdong from "./pages/FeishengZheXingdong";
+import ErrorBoundary from "./components/ErrorBoundary";
 
-function Router() {
-  // make sure to consider if you need authentication for certain routes
+function PageRenderer() {
+  const { currentPage } = useRoute();
+
   return (
-    <Switch>
-      <Route path={"/"} component={Home} />
-      <Route path={"/turning-point"} component={TurningPoint} />
-      <Route path={"/milestones"} component={Milestones} />
-      <Route path={"/milestones/feisheng-zhe-xingdong"} component={FeishengZheXingdong} />
-      <Route path={"/404"} component={NotFound} />
-      {/* Final fallback route */}
-      <Route component={NotFound} />
-    </Switch>
+    <div className="relative">
+      {/* Home Page */}
+      <div
+        className={`transition-opacity duration-500 ${
+          currentPage === "home" ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none absolute inset-0"
+        }`}
+      >
+        <Home />
+      </div>
+
+      {/* Milestones Page */}
+      <div
+        className={`transition-opacity duration-500 ${
+          currentPage === "milestones" ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none absolute inset-0"
+        }`}
+      >
+        <Milestones />
+      </div>
+
+      {/* Turning Point Page */}
+      <div
+        className={`transition-opacity duration-500 ${
+          currentPage === "turning-point" ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none absolute inset-0"
+        }`}
+      >
+        <TurningPoint />
+      </div>
+
+      {/* Feisheng Zhe Xingdong Page */}
+      <div
+        className={`transition-opacity duration-500 ${
+          currentPage === "feisheng-zhe-xingdong" ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none absolute inset-0"
+        }`}
+      >
+        <FeishengZheXingdong />
+      </div>
+    </div>
   );
 }
-
-// NOTE: About Theme
-// - First choose a default theme according to your design style (dark or light bg), than change color palette in index.css
-//   to keep consistent foreground/background color across components
-// - If you want to make theme switchable, pass `switchable` ThemeProvider and use `useTheme` hook
 
 function App() {
   return (
     <ErrorBoundary>
       <HackerCodeEffect />
       <MusicProvider>
-        <ThemeProvider
-          defaultTheme="dark"
-          // switchable
-        >
+        <ThemeProvider defaultTheme="dark">
           <TooltipProvider>
             <Toaster />
-            <Router />
+            <RouteProvider>
+              <PageRenderer />
+            </RouteProvider>
           </TooltipProvider>
         </ThemeProvider>
       </MusicProvider>

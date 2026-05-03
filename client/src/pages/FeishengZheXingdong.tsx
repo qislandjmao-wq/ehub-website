@@ -2,6 +2,7 @@ import { ArrowLeft, ArrowUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
 import { trpc } from "@/lib/trpc";
+import { useRoute } from "@/contexts/RouteContext";
 
 /**
  * Feisheng Zhe Xingdong Milestone Page
@@ -30,6 +31,7 @@ function formatKilledAt(date: Date): { dateStr: string; timeStr: string } {
 }
 
 export default function FeishengZheXingdong() {
+  const { navigateTo } = useRoute();
   const utils = trpc.useUtils();
 
   const seedMutation = trpc.bossKills.seed.useMutation({
@@ -66,7 +68,7 @@ export default function FeishengZheXingdong() {
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => window.history.back()}
+            onClick={() => navigateTo("milestones")}
             className="text-primary hover:text-primary/80"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
