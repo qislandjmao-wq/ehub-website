@@ -9,7 +9,8 @@ const MusicContext = createContext<MusicContextType | undefined>(undefined);
 
 export function MusicProvider({ children }: { children: ReactNode }) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const [isPlaying, setIsPlaying] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const hasInteractedRef = useRef(false);
 
   useEffect(() => {
     // 创建音频元素
@@ -19,23 +20,41 @@ export function MusicProvider({ children }: { children: ReactNode }) {
       audio.loop = true;
       audio.volume = 0.3; // 设置音量为 30%
       audioRef.current = audio;
-
-      // 尝试自动播放
-      const playPromise = audio.play();
-      if (playPromise !== undefined) {
-        playPromise
-          .then(() => {
-            setIsPlaying(true);
-          })
-          .catch(() => {
-            // 自动播放被浏览器阻止，等待用户交互
-            setIsPlaying(false);
-          });
-      }
     }
 
+    // 监听用户交互事件
+    const handleUserInteraction = async () => {
+      if (hasInteractedRef.current || !audioRef.current) return;
+      
+      hasInteractedRef.current = true;
+      
+      try {
+        await audioRef.current.play();
+        setIsPlaying(true);
+      } catch (error) {
+        console.warn("Failed to play music:", error);
+        setIsPlaying(false);
+      }
+      
+      // 移除所有交互监听器
+      document.removeEventListener("click", handleUserInteraction);
+      document.removeEventListener("scroll", handleUserInteraction);
+      document.removeEventListener("keydown", handleUserInteraction);
+      document.removeEventListener("touchstart", handleUserInteraction);
+    };
+
+    // 添加交互监听器
+    document.addEventListener("click", handleUserInteraction);
+    document.addEventListener("scroll", handleUserInteraction);
+    document.addEventListener("keydown", handleUserInteraction);
+    document.addEventListener("touchstart", handleUserInteraction);
+
     return () => {
-      // 组件卸载时不停止音乐，保持播放
+      // 组件卸载时移除监听器
+      document.removeEventListener("click", handleUserInteraction);
+      document.removeEventListener("scroll", handleUserInteraction);
+      document.removeEventListener("keydown", handleUserInteraction);
+      document.removeEventListener("touchstart", handleUserInteraction);
     };
   }, []);
 
