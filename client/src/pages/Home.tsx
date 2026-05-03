@@ -100,7 +100,7 @@ export default function Home() {
             color: "#39ff14",
             fontStyle: "italic",
           }}>
-            -'甚么？航空学出了？' -'是的，你活到头了！'
+            -"甚么？航空学出了？" -"是的，你活到头了！"
           </p>
 
           {/* Main Description */}
@@ -114,7 +114,7 @@ export default function Home() {
             这里没有"应该做的事"，只有你想做的事。
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-8 sm:mb-12 w-full sm:w-auto">
+          <div className="flex flex-row gap-3 sm:gap-4 justify-center mb-8 sm:mb-12 w-full sm:w-auto">
             <Button
               size="lg"
               className="btn-tech text-sm sm:text-base"
@@ -161,7 +161,7 @@ export default function Home() {
               加入我们
             </h2>
             <p className="text-sm sm:text-base md:text-lg text-muted-foreground mb-6 sm:mb-8">
-              艰苦卓绝成立于 2022 年 1 月 18 日，现已发展成为一个充满活力的 Minecraft 社区。
+              成立于 2022 年 1 月 18 日
             </p>
             <div className="space-y-3 sm:space-y-4">
               <div className="p-3 sm:p-4 rounded-lg border border-primary/30 bg-primary/5">
