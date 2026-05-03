@@ -66,7 +66,7 @@ export default function Milestones() {
           <div className="card-glow p-12">
             {/* Title */}
             <h1 className="text-4xl md:text-5xl font-bold mb-12 text-center" style={displayStyle}>
-              <span className="text-glow">服务器周目</span>
+              <span className="text-glow">周目列表</span>
             </h1>
 
             {/* Milestones Grid */}

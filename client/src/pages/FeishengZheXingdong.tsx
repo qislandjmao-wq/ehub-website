@@ -91,22 +91,26 @@ export default function FeishengZheXingdong() {
         <div className="container max-w-4xl">
           <div className="card-glow p-12">
             {/* Title */}
-            <h1 className="text-4xl md:text-5xl font-bold mb-12 text-center" style={displayStyle}>
-              <span className="text-glow">飞升者行动</span>
+            <h1 className="text-4xl md:text-5xl font-bold mb-12 text-center flicker-text" style={{
+              fontFamily: "'FZChaoZTJW', sans-serif",
+              color: "#00d4ff",
+              textShadow: "0 0 10px rgba(0, 212, 255, 0.5), 0 0 20px rgba(0, 212, 255, 0.3)",
+            }}>
+              飞升者行动
             </h1>
 
             {/* Most Participated Player */}
             {mostParticipatedPlayer.player && (
-              <div className="mb-8 p-6 rounded-lg border border-neon-green/30 bg-neon-green/5">
-                <p className="text-xs text-muted-foreground mb-2" style={techStyle}>
+              <div className="mb-8 p-6 rounded-lg border border-red-500/30 bg-red-500/5">
+                <p className="text-xs font-bold mb-2" style={{ color: "#ff0000", fontFamily: "Arial, sans-serif" }}>
                   参团最多
                 </p>
                 <div className="flex items-center justify-between">
                   <span
                     className="text-2xl font-bold"
                     style={{
-                      color: "#39ff14",
-                      fontFamily: "Orbitron, sans-serif",
+                      color: "#ff0000",
+                      fontFamily: "Arial, sans-serif",
                     }}
                   >
                     {mostParticipatedPlayer.player}
@@ -114,7 +118,7 @@ export default function FeishengZheXingdong() {
                   <span
                     className="text-lg"
                     style={{
-                      color: "#39ff14",
+                      color: "#ff0000",
                       fontFamily: "Space Mono, monospace",
                     }}
                   >

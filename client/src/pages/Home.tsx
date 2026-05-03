@@ -41,9 +41,9 @@ export default function Home() {
             </h1>
           </div>
           <div className="flex items-center gap-4">
-            <a href="#join" className="text-sm hover:text-primary transition-colors">
-              加入
-            </a>
+            <span className="text-sm text-muted-foreground" style={{ fontWeight: 700, fontFamily: "Arial, sans-serif" }}>
+              服主：古城林
+            </span>
           </div>
         </div>
       </nav>
@@ -55,7 +55,7 @@ export default function Home() {
           className="absolute inset-0 z-0"
           style={{
             backgroundImage:
-              "url('https://d2xsxph8kpxj0f.cloudfront.net/310519663472474284/8pC7TLPU7HpozxEHK6PsGa/hero-create-factory-WfJ4uJJJW79gWLNcT758Tk.webp')",
+              "url('https://createsimulated.com/resources/images/background.png')",
             backgroundSize: "cover",
             backgroundPosition: "center",
             backgroundAttachment: "fixed",
@@ -103,6 +103,7 @@ export default function Home() {
               size="lg"
               className="btn-tech"
               onClick={() => window.location.href = "/milestones"}
+              style={{ fontWeight: 900, fontFamily: "Arial, sans-serif" }}
             >
               里程碑
             </Button>
@@ -110,6 +111,7 @@ export default function Home() {
               size="lg"
               className="btn-tech"
               onClick={() => window.location.href = "/turning-point"}
+              style={{ fontWeight: 900, fontFamily: "Arial, sans-serif" }}
             >
               转折点
             </Button>
