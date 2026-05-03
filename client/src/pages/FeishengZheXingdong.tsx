@@ -1,4 +1,4 @@
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ArrowUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
 import { trpc } from "@/lib/trpc";
@@ -207,7 +207,7 @@ export default function FeishengZheXingdong() {
                 className="border-primary/50 text-primary hover:bg-primary/10"
                 onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
               >
-                <ArrowLeft className="w-4 h-4 mr-2" />
+                <ArrowUp className="w-4 h-4 mr-2" />
                 返回顶部
               </Button>
             </div>

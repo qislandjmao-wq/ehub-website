@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Cog } from "lucide-react";
+import IntroGate from "@/components/IntroGate";
 
 /**
  * Home Page - 艰苦卓绝 Minecraft Server
@@ -22,6 +23,7 @@ const techStyle = {
 
 export default function Home() {
   const [scrollY, setScrollY] = useState(0);
+  const [showGate, setShowGate] = useState(true);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -29,8 +31,15 @@ export default function Home() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const handleGateComplete = useCallback(() => {
+    setShowGate(false);
+  }, []);
+
   return (
     <div className="bg-background text-foreground">
+      {/* 开屏动画 */}
+      {showGate && <IntroGate onComplete={handleGateComplete} />}
+
       {/* Navigation Bar */}
       <nav className="fixed top-0 w-full z-50 border-b border-primary/10 bg-background/80 backdrop-blur-md">
         <div className="container flex items-center justify-between h-16">

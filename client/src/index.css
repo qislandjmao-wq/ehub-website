@@ -276,6 +276,20 @@
     animation: flicker 3s infinite;
   }
 
+  /* 推拉门开屏动画 keyframes */
+  @keyframes gateGearSpin {
+    0% { transform: rotate(0deg); }
+    40% { transform: rotate(180deg); }
+    70% { transform: rotate(340deg); }
+    85% { transform: rotate(355deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  @keyframes lockOpen {
+    from { stroke-dashoffset: 20; }
+    to { stroke-dashoffset: 0; }
+  }
+
   @media (min-width: 640px) {
     .container {
       padding-left: 1.5rem; /* 24px - tablet padding */
