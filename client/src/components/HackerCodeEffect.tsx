@@ -1,32 +1,28 @@
 import { useEffect, useRef } from "react";
 
-interface CodeParticle {
+interface CodeColumn {
   id: number;
-  text: string;
   x: number;
-  y: number;
-  duration: number;
-  delay: number;
-  opacity: number;
+  chars: string[];
   speed: number;
+  offset: number;
+  opacity: number;
 }
 
-// 生成更长的代码字符串
-function generateCodeString(): string {
-  const binaryChunks = [];
-  for (let i = 0; i < 3; i++) {
-    binaryChunks.push(
-      Math.random().toString(2).substring(2, 10) +
-      " " +
-      Math.random().toString(16).substring(2, 10)
-    );
-  }
-  return binaryChunks.join(" | ");
+// 生成随机字符
+function getRandomChar(): string {
+  const chars = [
+    "0", "1", "A", "B", "C", "D", "E", "F",
+    "{", "}", "[", "]", "(", ")", "<", ">",
+    "=", "+", "-", "*", "/", "&", "|", "^",
+    "~", "!", "?", ".", ",", ";", ":",
+  ];
+  return chars[Math.floor(Math.random() * chars.length)];
 }
 
 export default function HackerCodeEffect() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const particlesRef = useRef<CodeParticle[]>([]);
+  const columnsRef = useRef<CodeColumn[]>([]);
   const idRef = useRef(0);
   const animationRef = useRef<number | null>(null);
 
@@ -46,76 +42,80 @@ export default function HackerCodeEffect() {
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
 
-    // 创建新粒子
-    const createParticle = () => {
-      const text = generateCodeString();
-      const x = Math.random() * canvas.width;
-      const y = -30;
-      const duration = 12000 + Math.random() * 10000; // 12-22 秒
-      const delay = Math.random() * 500;
-      const speed = 0.5 + Math.random() * 0.5; // 流速参差不齐
+    // 创建新列
+    const createColumn = () => {
+      const chars: string[] = [];
+      const charCount = 20 + Math.floor(Math.random() * 30); // 20-50 个字符
+      for (let i = 0; i < charCount; i++) {
+        chars.push(getRandomChar());
+      }
 
-      particlesRef.current.push({
+      columnsRef.current.push({
         id: idRef.current++,
-        text,
-        x,
-        y,
-        duration,
-        delay,
-        opacity: 0.12 + Math.random() * 0.18, // 0.12-0.3 透明度
-        speed,
+        x: Math.random() * canvas.width,
+        chars,
+        speed: 0.3 + Math.random() * 0.7, // 0.3-1.0 流速
+        offset: -charCount * 12, // 从屏幕上方开始
+        opacity: 0.15 + Math.random() * 0.2, // 0.15-0.35 透明度
       });
     };
 
+    // 初始化：创建足够多的列覆盖整个屏幕
+    for (let i = 0; i < 80; i++) {
+      createColumn();
+    }
+
     // 动画循环
-    let lastParticleTime = 0;
-    const animate = (timestamp: number) => {
+    let frameCount = 0;
+    const animate = () => {
       // 清空 canvas
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // 持续创建新粒子（无限循环）
-      if (timestamp - lastParticleTime > 300 + Math.random() * 400) {
-        createParticle();
-        lastParticleTime = timestamp;
+      // 定期创建新列（保持密度）
+      frameCount++;
+      if (frameCount % 5 === 0 && columnsRef.current.length < 120) {
+        createColumn();
       }
 
-      // 更新并绘制粒子
-      particlesRef.current = particlesRef.current.filter((particle) => {
-        const elapsed = timestamp - particle.delay;
+      // 更新并绘制列
+      columnsRef.current = columnsRef.current.filter((column) => {
+        // 更新偏移
+        column.offset += column.speed;
 
-        if (elapsed < 0) {
-          return true; // 还未开始
+        // 如果列完全离开屏幕，删除它
+        if (column.offset > canvas.height + 600) {
+          return false;
         }
 
-        if (elapsed > particle.duration) {
-          return false; // 已结束
-        }
-
-        // 计算进度
-        const progress = elapsed / particle.duration;
-
-        // 上下漂浮（正弦波）+ 向下移动
-        const floatOffset = Math.sin(progress * Math.PI * 3) * 15;
-        const currentY =
-          particle.y +
-          progress * (canvas.height + 60) * particle.speed +
-          floatOffset;
-
-        // 透明度逐渐降低
-        const alpha = particle.opacity * (1 - progress);
-
-        // 绘制文字
-        ctx.font = "11px 'Space Mono', monospace";
-        ctx.fillStyle = `rgba(0, 212, 255, ${alpha})`;
-        ctx.textAlign = "left";
+        // 绘制字符列
+        ctx.font = "12px 'Space Mono', monospace";
+        ctx.textAlign = "center";
         ctx.textBaseline = "middle";
-        ctx.fillText(particle.text, particle.x, currentY);
 
-        // 添加发光效果
-        ctx.shadowColor = `rgba(0, 212, 255, ${alpha * 0.6})`;
-        ctx.shadowBlur = 6;
-        ctx.fillText(particle.text, particle.x, currentY);
-        ctx.shadowBlur = 0;
+        for (let i = 0; i < column.chars.length; i++) {
+          const y = column.offset + i * 12;
+
+          // 只绘制在屏幕范围内的字符
+          if (y > -20 && y < canvas.height + 20) {
+            // 计算透明度（顶部和底部渐隐）
+            let alpha = column.opacity;
+            if (y < 50) {
+              alpha *= y / 50;
+            }
+            if (y > canvas.height - 50) {
+              alpha *= (canvas.height - y) / 50;
+            }
+
+            ctx.fillStyle = `rgba(0, 212, 255, ${alpha})`;
+            ctx.fillText(column.chars[i], column.x, y);
+
+            // 添加发光效果
+            ctx.shadowColor = `rgba(0, 212, 255, ${alpha * 0.5})`;
+            ctx.shadowBlur = 5;
+            ctx.fillText(column.chars[i], column.x, y);
+            ctx.shadowBlur = 0;
+          }
+        }
 
         return true;
       });
