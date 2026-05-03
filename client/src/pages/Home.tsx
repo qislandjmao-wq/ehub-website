@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Cog } from "lucide-react";
 
 /**
  * Home Page - 艰苦卓绝 Minecraft Server
@@ -29,7 +30,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background text-foreground overflow-hidden">
+    <div className="bg-background text-foreground">
       {/* Navigation Bar */}
       <nav className="fixed top-0 w-full z-50 border-b border-primary/10 bg-background/80 backdrop-blur-md">
         <div className="container flex items-center justify-between h-16">
@@ -47,8 +48,8 @@ export default function Home() {
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center pt-16 overflow-hidden">
+      {/* Hero Section - Full Screen */}
+      <section className="relative h-screen w-screen flex items-center justify-center overflow-hidden pt-16">
         {/* Background Image with Dark Vignette and Frosted Glass */}
         <div
           className="absolute inset-0 z-0"
@@ -70,7 +71,7 @@ export default function Home() {
         </div>
 
         {/* Content */}
-        <div className="relative z-10 container text-center max-w-3xl px-4">
+        <div className="relative z-10 container text-center max-w-3xl px-4 flex flex-col items-center justify-center h-full">
           <div className="mb-6 inline-block">
             <div className="px-4 py-2 rounded-full border border-primary/30 bg-primary/5 backdrop-blur-sm">
               <span className="text-xs text-primary" style={techStyle}>
@@ -81,10 +82,10 @@ export default function Home() {
 
           {/* Two-line Title */}
           <div className="mb-6">
-            <h2 className="text-2xl md:text-3xl font-bold text-primary mb-2" style={displayStyle}>
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-primary mb-2" style={displayStyle}>
               E-hub
             </h2>
-            <h1 className="text-6xl md:text-8xl font-bold leading-tight flicker-text" style={{
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold leading-tight flicker-text" style={{
               fontFamily: "'FZChaoZTJW', sans-serif",
               color: "#00d4ff",
               textShadow: "0 0 10px rgba(0, 212, 255, 0.5), 0 0 20px rgba(0, 212, 255, 0.3)",
@@ -94,7 +95,7 @@ export default function Home() {
           </div>
 
           {/* Quote */}
-          <p className="text-lg md:text-lg italic mb-8 leading-relaxed" style={{
+          <p className="text-sm sm:text-base md:text-lg italic mb-6 sm:mb-8 leading-relaxed" style={{
             fontFamily: "'FangSong', serif",
             color: "#39ff14",
             fontStyle: "italic",
@@ -103,8 +104,9 @@ export default function Home() {
           </p>
 
           {/* Main Description */}
-          <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed" style={{
+          <p className="text-xs sm:text-sm md:text-lg lg:text-xl text-muted-foreground mb-6 sm:mb-8 leading-relaxed" style={{
             textShadow: "0 0 8px rgba(0, 0, 0, 0.8), 0 0 4px rgba(0, 0, 0, 0.6)",
+            whiteSpace: "normal",
           }}>
             这不是一个让你放松的游戏。前期比生活更苦，活命都成难题。<br />
             但熬过去之后，没有主线，没有约束，想干嘛就干嘛。<br />
@@ -112,10 +114,10 @@ export default function Home() {
             这里没有"应该做的事"，只有你想做的事。
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-8 sm:mb-12 w-full sm:w-auto">
             <Button
               size="lg"
-              className="btn-tech"
+              className="btn-tech text-sm sm:text-base"
               onClick={() => window.location.href = "/milestones"}
               style={{ fontWeight: 900, fontFamily: "Arial, sans-serif" }}
             >
@@ -123,7 +125,7 @@ export default function Home() {
             </Button>
             <Button
               size="lg"
-              className="btn-tech"
+              className="btn-tech text-sm sm:text-base"
               onClick={() => window.location.href = "/turning-point"}
               style={{ fontWeight: 900, fontFamily: "Arial, sans-serif" }}
             >
@@ -132,43 +134,43 @@ export default function Home() {
           </div>
 
           {/* Server Stats */}
-          <div className="grid grid-cols-3 gap-4 mt-16 text-center">
-            <div className="card-glow p-4">
-              <div className="text-2xl font-bold text-primary mb-1">Java</div>
-              <div className="text-xs text-muted-foreground">平台</div>
+          <div className="grid grid-cols-3 gap-2 sm:gap-3 md:gap-4 mt-8 sm:mt-12 text-center w-full">
+            <div className="card-glow p-2 sm:p-3 md:p-4 min-w-0">
+              <div className="text-lg sm:text-xl md:text-2xl font-bold text-primary mb-1 truncate">Java</div>
+              <div className="text-xs text-muted-foreground truncate">平台</div>
             </div>
-            <div className="card-glow p-4">
-              <div className="text-2xl font-bold mb-1" style={{ color: "#39ff14" }}>
+            <div className="card-glow p-2 sm:p-3 md:p-4 min-w-0">
+              <div className="text-lg sm:text-xl md:text-2xl font-bold mb-1 truncate" style={{ color: "#39ff14" }}>
                 1.21.1
               </div>
-              <div className="text-xs text-muted-foreground">当前版本</div>
+              <div className="text-xs text-muted-foreground truncate">当前版本</div>
             </div>
-            <div className="card-glow p-4">
-              <div className="text-2xl font-bold text-primary mb-1">neoforge</div>
-              <div className="text-xs text-muted-foreground">加载器</div>
+            <div className="card-glow p-2 sm:p-3 md:p-4 min-w-0">
+              <div className="text-lg sm:text-xl md:text-2xl font-bold text-primary mb-1 truncate">neoforge</div>
+              <div className="text-xs text-muted-foreground truncate">加载器</div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Join Section */}
-      <section id="join" className="py-20 border-t border-primary/10 bg-background/50 backdrop-blur-md">
-        <div className="container max-w-2xl">
-          <div className="card-glow p-12 text-center">
-            <h2 className="text-4xl font-bold mb-6 text-primary" style={displayStyle}>
+      {/* Join Section - Full Screen */}
+      <section id="join" className="relative h-screen w-screen flex items-center justify-center border-t border-primary/10 bg-background/50 backdrop-blur-md overflow-hidden pt-16">
+        <div className="container max-w-2xl px-4 flex items-center justify-center h-full">
+          <div className="card-glow p-6 sm:p-8 md:p-12 text-center w-full">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 text-primary" style={displayStyle}>
               加入我们
             </h2>
-            <p className="text-lg text-muted-foreground mb-8">
+            <p className="text-sm sm:text-base md:text-lg text-muted-foreground mb-6 sm:mb-8">
               艰苦卓绝成立于 2022 年 1 月 18 日，现已发展成为一个充满活力的 Minecraft 社区。
             </p>
-            <div className="space-y-4">
-              <div className="p-4 rounded-lg border border-primary/30 bg-primary/5">
-                <p className="text-sm text-muted-foreground mb-2">QQ 群</p>
-                <p className="text-2xl font-bold text-primary">657699707</p>
+            <div className="space-y-3 sm:space-y-4">
+              <div className="p-3 sm:p-4 rounded-lg border border-primary/30 bg-primary/5">
+                <p className="text-xs sm:text-sm text-muted-foreground mb-1 sm:mb-2">QQ 群</p>
+                <p className="text-lg sm:text-xl md:text-2xl font-bold text-primary">657699707</p>
               </div>
               <Button
                 size="lg"
-                className="btn-tech w-full"
+                className="btn-tech w-full text-sm sm:text-base"
                 onClick={() => window.open("https://qm.qq.com/q/657699707", "_blank")}
                 style={{ fontWeight: 900, fontFamily: "Arial, sans-serif" }}
               >
@@ -180,14 +182,11 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="py-8 border-t border-primary/10 bg-background/80 backdrop-blur-md">
-        <div className="container text-center text-sm text-muted-foreground">
+      <footer className="py-6 sm:py-8 border-t border-primary/10 bg-background/80 backdrop-blur-md">
+        <div className="container text-center text-xs sm:text-sm text-muted-foreground">
           <p>© 2022-2026 艰苦卓绝 Minecraft Server. All rights reserved.</p>
         </div>
       </footer>
     </div>
   );
 }
-
-// Import icon
-import { Cog } from "lucide-react";
