@@ -55,7 +55,7 @@ export default function Home() {
                 className="w-6 h-6 text-primary"
                 style={{
                   animation: isPlaying ? "spin 3s linear infinite" : "none",
-                  animationDuration: "3s",
+                  ...(isPlaying && { animationDuration: "3s" }),
                 }}
               />
             </button>
