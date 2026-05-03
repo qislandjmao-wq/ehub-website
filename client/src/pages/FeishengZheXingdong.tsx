@@ -101,30 +101,19 @@ export default function FeishengZheXingdong() {
 
             {/* Most Participated Player */}
             {mostParticipatedPlayer.player && (
-              <div className="mb-8 p-6 rounded-lg border border-red-500/30 bg-red-500/5">
-                <p className="text-xs font-bold mb-2" style={{ color: "#ff0000", fontFamily: "Arial, sans-serif" }}>
+              <div className="mb-8 p-6 rounded-lg border border-red-500/30 bg-red-500/5 text-center">
+                <p className="text-xs font-bold mb-4" style={{ color: "#ff0000", fontFamily: "Arial, sans-serif" }}>
                   参团最多
                 </p>
-                <div className="flex items-center justify-between">
-                  <span
-                    className="text-2xl font-bold"
-                    style={{
-                      color: "#ff0000",
-                      fontFamily: "Arial, sans-serif",
-                    }}
-                  >
-                    {mostParticipatedPlayer.player}
-                  </span>
-                  <span
-                    className="text-lg"
-                    style={{
-                      color: "#ff0000",
-                      fontFamily: "Space Mono, monospace",
-                    }}
-                  >
-                    {mostParticipatedPlayer.count} 次
-                  </span>
-                </div>
+                <span
+                  className="text-2xl font-bold"
+                  style={{
+                    color: "#39ff14",
+                    fontFamily: "Arial, sans-serif",
+                  }}
+                >
+                  {mostParticipatedPlayer.player}
+                </span>
               </div>
             )}
 
@@ -216,10 +205,10 @@ export default function FeishengZheXingdong() {
               <Button
                 variant="outline"
                 className="border-primary/50 text-primary hover:bg-primary/10"
-                onClick={() => window.history.back()}
+                onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
-                返回里程碑
+                返回顶部
               </Button>
             </div>
           </div>

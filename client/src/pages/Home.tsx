@@ -1,4 +1,3 @@
-import { Users, Cog } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 
@@ -83,7 +82,7 @@ export default function Home() {
           {/* Two-line Title */}
           <div className="mb-6">
             <h2 className="text-2xl md:text-3xl font-bold text-primary mb-2" style={displayStyle}>
-              艰苦卓绝
+              E-hub
             </h2>
             <h1 className="text-6xl md:text-8xl font-bold leading-tight flicker-text" style={{
               fontFamily: "'FZChaoZTJW', sans-serif",
@@ -94,8 +93,23 @@ export default function Home() {
             </h1>
           </div>
 
-          <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed">
-            前期高难度的挑战，后期高自由度的创造。以 Create 模组为核心，打造精密工程的乐园。
+          {/* Quote */}
+          <p className="text-lg md:text-lg italic mb-8 leading-relaxed" style={{
+            fontFamily: "'FangSong', serif",
+            color: "#39ff14",
+            fontStyle: "italic",
+          }}>
+            -'甚么？航空学出了？' -'是的，你活到头了！'
+          </p>
+
+          {/* Main Description */}
+          <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed" style={{
+            textShadow: "0 0 8px rgba(0, 0, 0, 0.8), 0 0 4px rgba(0, 0, 0, 0.6)",
+          }}>
+            这不是一个让你放松的游戏。前期比生活更苦，活命都成难题。<br />
+            但熬过去之后，没有主线，没有约束，想干嘛就干嘛。<br />
+            你可以用工业征服世界，也可以成为吓哭所有人的"法爷"。<br />
+            这里没有"应该做的事"，只有你想做的事。
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
@@ -124,7 +138,9 @@ export default function Home() {
               <div className="text-xs text-muted-foreground">平台</div>
             </div>
             <div className="card-glow p-4">
-              <div className="text-2xl font-bold text-neon-green mb-1">1.21.1</div>
+              <div className="text-2xl font-bold mb-1" style={{ color: "#39ff14" }}>
+                1.21.1
+              </div>
               <div className="text-xs text-muted-foreground">当前版本</div>
             </div>
             <div className="card-glow p-4">
@@ -133,51 +149,31 @@ export default function Home() {
             </div>
           </div>
         </div>
-
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10 animate-bounce">
-          <div className="w-6 h-10 border-2 border-primary/50 rounded-full flex items-start justify-center p-2">
-            <div className="w-1 h-2 bg-primary rounded-full animate-pulse" />
-          </div>
-        </div>
       </section>
 
       {/* Join Section */}
-      <section id="join" className="py-20 border-t border-primary/10 bg-background/50 relative">
-        <div className="container max-w-3xl">
+      <section id="join" className="py-20 border-t border-primary/10 bg-background/50 backdrop-blur-md">
+        <div className="container max-w-2xl">
           <div className="card-glow p-12 text-center">
-            <h2 className="text-4xl font-bold mb-6" style={displayStyle}>
-              <span className="text-glow">加入我们</span>
+            <h2 className="text-4xl font-bold mb-6 text-primary" style={displayStyle}>
+              加入我们
             </h2>
-
-            <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-              准备好接受挑战了吗？加入 QQ 群，与志同道合的玩家一起探索艰苦卓绝的世界。
+            <p className="text-lg text-muted-foreground mb-8">
+              艰苦卓绝成立于 2022 年 1 月 18 日，现已发展成为一个充满活力的 Minecraft 社区。
             </p>
-
-            <div className="bg-background/50 rounded-lg p-8 mb-8 border border-primary/20">
-              <p className="text-sm text-muted-foreground mb-4">QQ 群号</p>
-              <p className="text-4xl font-bold text-primary mb-4" style={techStyle}>
-                657699707
-              </p>
-              <p className="text-sm text-muted-foreground">点击下方按钮加入群聊</p>
-            </div>
-
-            <Button
-              size="lg"
-              className="btn-tech w-full sm:w-auto"
-              onClick={() => {
-                window.open("https://qm.qq.com/cgi-bin/qm/qr?k=wkB5qKLKvGLzfEZCVvLVGZj9f3LPqFvL&jump_from=webapi&authKey=", "_blank");
-              }}
-            >
-              <Users className="mr-2 w-4 h-4" />
-              加入 QQ 群
-            </Button>
-
-            <div className="mt-8 pt-8 border-t border-primary/10">
-              <p className="text-sm text-muted-foreground mb-4">服务器成立于</p>
-              <p className="text-2xl font-bold text-neon-green" style={techStyle}>
-                2022 年 1 月 18 日
-              </p>
+            <div className="space-y-4">
+              <div className="p-4 rounded-lg border border-primary/30 bg-primary/5">
+                <p className="text-sm text-muted-foreground mb-2">QQ 群</p>
+                <p className="text-2xl font-bold text-primary">657699707</p>
+              </div>
+              <Button
+                size="lg"
+                className="btn-tech w-full"
+                onClick={() => window.open("https://qm.qq.com/q/657699707", "_blank")}
+                style={{ fontWeight: 900, fontFamily: "Arial, sans-serif" }}
+              >
+                加入 QQ 群
+              </Button>
             </div>
           </div>
         </div>
@@ -187,11 +183,11 @@ export default function Home() {
       <footer className="py-8 border-t border-primary/10 bg-background/80 backdrop-blur-md">
         <div className="container text-center text-sm text-muted-foreground">
           <p>© 2022-2026 艰苦卓绝 Minecraft Server. All rights reserved.</p>
-          <p className="mt-2 text-xs">
-            Powered by <span className="text-primary">Industrial Dark Tech Design</span>
-          </p>
         </div>
       </footer>
     </div>
   );
 }
+
+// Import icon
+import { Cog } from "lucide-react";
