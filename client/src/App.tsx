@@ -5,6 +5,7 @@ import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { MusicProvider } from "./contexts/MusicContext";
+import HackerCodeEffect from "./components/HackerCodeEffect";
 import Home from "./pages/Home";
 import TurningPoint from "./pages/TurningPoint";
 import Milestones from "./pages/Milestones";
@@ -33,6 +34,7 @@ function Router() {
 function App() {
   return (
     <ErrorBoundary>
+      <HackerCodeEffect />
       <MusicProvider>
         <ThemeProvider
           defaultTheme="dark"
