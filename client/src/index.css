@@ -3,6 +3,9 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Import tech-forward fonts */
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap');
+
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -43,82 +46,107 @@
 }
 
 :root {
-  --primary: var(--color-blue-700);
-  --primary-foreground: var(--color-blue-50);
-  --sidebar-primary: var(--color-blue-600);
-  --sidebar-primary-foreground: var(--color-blue-50);
-  --chart-1: var(--color-blue-300);
-  --chart-2: var(--color-blue-500);
-  --chart-3: var(--color-blue-600);
-  --chart-4: var(--color-blue-700);
-  --chart-5: var(--color-blue-800);
-  --radius: 0.65rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.235 0.015 65);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.235 0.015 65);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.235 0.015 65);
-  --secondary: oklch(0.98 0.001 286.375);
-  --secondary-foreground: oklch(0.4 0.015 65);
-  --muted: oklch(0.967 0.001 286.375);
-  --muted-foreground: oklch(0.552 0.016 285.938);
-  --accent: oklch(0.967 0.001 286.375);
-  --accent-foreground: oklch(0.141 0.005 285.823);
-  --destructive: oklch(0.577 0.245 27.325);
+  /* Industrial Dark Tech Color Palette */
+  --color-dark-bg: #0a0e27;
+  --color-dark-card: #141829;
+  --color-cyan: #00d4ff;
+  --color-neon-green: #39ff14;
+  --color-text-light: #e8eef5;
+  --color-text-muted: #a0afc0;
+  
+  --primary: var(--color-cyan);
+  --primary-foreground: var(--color-dark-bg);
+  --sidebar-primary: var(--color-cyan);
+  --sidebar-primary-foreground: var(--color-dark-bg);
+  --chart-1: var(--color-cyan);
+  --chart-2: #00b8d4;
+  --chart-3: var(--color-neon-green);
+  --chart-4: #2dff00;
+  --chart-5: #00d4ff;
+  --radius: 0.5rem;
+  --background: oklch(0.06 0.01 265);
+  --foreground: oklch(0.92 0.01 65);
+  --card: oklch(0.08 0.01 265);
+  --card-foreground: oklch(0.92 0.01 65);
+  --popover: oklch(0.08 0.01 265);
+  --popover-foreground: oklch(0.92 0.01 65);
+  --secondary: oklch(0.1 0.01 265);
+  --secondary-foreground: oklch(0.85 0.01 65);
+  --muted: oklch(0.12 0.01 265);
+  --muted-foreground: oklch(0.7 0.01 65);
+  --accent: var(--color-cyan);
+  --accent-foreground: var(--color-dark-bg);
+  --destructive: oklch(0.704 0.191 22.216);
   --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(0.92 0.004 286.32);
-  --input: oklch(0.92 0.004 286.32);
-  --ring: oklch(0.623 0.214 259.815);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.235 0.015 65);
-  --sidebar-accent: oklch(0.967 0.001 286.375);
-  --sidebar-accent-foreground: oklch(0.141 0.005 285.823);
-  --sidebar-border: oklch(0.92 0.004 286.32);
-  --sidebar-ring: oklch(0.623 0.214 259.815);
+  --border: oklch(0.15 0.01 265);
+  --input: oklch(0.12 0.01 265);
+  --ring: var(--color-cyan);
+  --sidebar: oklch(0.08 0.01 265);
+  --sidebar-foreground: oklch(0.92 0.01 65);
+  --sidebar-accent: var(--color-cyan);
+  --sidebar-accent-foreground: var(--color-dark-bg);
+  --sidebar-border: oklch(0.15 0.01 265);
+  --sidebar-ring: var(--color-cyan);
 }
 
 .dark {
-  --primary: var(--color-blue-700);
-  --primary-foreground: var(--color-blue-50);
-  --sidebar-primary: var(--color-blue-500);
-  --sidebar-primary-foreground: var(--color-blue-50);
-  --background: oklch(0.141 0.005 285.823);
-  --foreground: oklch(0.85 0.005 65);
-  --card: oklch(0.21 0.006 285.885);
-  --card-foreground: oklch(0.85 0.005 65);
-  --popover: oklch(0.21 0.006 285.885);
-  --popover-foreground: oklch(0.85 0.005 65);
-  --secondary: oklch(0.24 0.006 286.033);
-  --secondary-foreground: oklch(0.7 0.005 65);
-  --muted: oklch(0.274 0.006 286.033);
-  --muted-foreground: oklch(0.705 0.015 286.067);
-  --accent: oklch(0.274 0.006 286.033);
-  --accent-foreground:  oklch(0.92 0.005 65);
+  /* Dark theme inherits root colors (already dark) */
+  --primary: var(--color-cyan);
+  --primary-foreground: var(--color-dark-bg);
+  --sidebar-primary: var(--color-cyan);
+  --sidebar-primary-foreground: var(--color-dark-bg);
+  --background: oklch(0.06 0.01 265);
+  --foreground: oklch(0.92 0.01 65);
+  --card: oklch(0.08 0.01 265);
+  --card-foreground: oklch(0.92 0.01 65);
+  --popover: oklch(0.08 0.01 265);
+  --popover-foreground: oklch(0.92 0.01 65);
+  --secondary: oklch(0.1 0.01 265);
+  --secondary-foreground: oklch(0.85 0.01 65);
+  --muted: oklch(0.12 0.01 265);
+  --muted-foreground: oklch(0.7 0.01 65);
+  --accent: var(--color-cyan);
+  --accent-foreground: var(--color-dark-bg);
   --destructive: oklch(0.704 0.191 22.216);
   --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.488 0.243 264.376);
-  --chart-1: var(--color-blue-300);
-  --chart-2: var(--color-blue-500);
-  --chart-3: var(--color-blue-600);
-  --chart-4: var(--color-blue-700);
-  --chart-5: var(--color-blue-800);
-  --sidebar: oklch(0.21 0.006 285.885);
-  --sidebar-foreground: oklch(0.85 0.005 65);
-  --sidebar-accent: oklch(0.274 0.006 286.033);
-  --sidebar-accent-foreground:  oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.488 0.243 264.376);
+  --border: oklch(0.15 0.01 265);
+  --input: oklch(0.12 0.01 265);
+  --ring: var(--color-cyan);
+  --chart-1: var(--color-cyan);
+  --chart-2: #00b8d4;
+  --chart-3: var(--color-neon-green);
+  --chart-4: #2dff00;
+  --chart-5: #00d4ff;
+  --sidebar: oklch(0.08 0.01 265);
+  --sidebar-foreground: oklch(0.92 0.01 65);
+  --sidebar-accent: var(--color-cyan);
+  --sidebar-accent-foreground: var(--color-dark-bg);
+  --sidebar-border: oklch(0.15 0.01 265);
+  --sidebar-ring: var(--color-cyan);
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+  
   body {
     @apply bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+  
+  h1 { font-size: 2.5rem; }
+  h2 { font-size: 2rem; }
+  h3 { font-size: 1.5rem; }
+  
+  code, pre {
+    font-family: 'Space Mono', monospace;
   }
   button:not(:disabled),
   [role="button"]:not([aria-disabled="true"]),
@@ -158,6 +186,80 @@
   .flex {
     min-height: 0;
     min-width: 0;
+  }
+
+  /* Industrial Dark Tech Typography */
+  .font-display {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  .font-tech {
+    font-family: 'Space Mono', monospace;
+    letter-spacing: 0.02em;
+  }
+
+  /* Glowing text effect */
+  .text-glow {
+    @apply text-cyan;
+    text-shadow: 0 0 10px rgba(0, 212, 255, 0.5), 0 0 20px rgba(0, 212, 255, 0.3);
+  }
+
+  .text-glow-green {
+    @apply text-neon-green;
+    text-shadow: 0 0 10px rgba(57, 255, 20, 0.5), 0 0 20px rgba(57, 255, 20, 0.3);
+  }
+
+  /* Card with glow effect */
+  .card-glow {
+    @apply bg-card border border-cyan/20 rounded-lg transition-all duration-300;
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.1), inset 0 0 20px rgba(0, 212, 255, 0.05);
+  }
+
+  .card-glow:hover {
+    @apply border-cyan/50;
+    box-shadow: 0 0 30px rgba(0, 212, 255, 0.2), inset 0 0 30px rgba(0, 212, 255, 0.1);
+  }
+
+  /* Button with tech effect */
+  .btn-tech {
+    @apply px-6 py-3 bg-cyan text-dark-bg font-tech font-bold rounded-md transition-all duration-300 hover:shadow-lg;
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+  }
+
+  .btn-tech:hover {
+    box-shadow: 0 0 25px rgba(0, 212, 255, 0.5), 0 0 40px rgba(0, 212, 255, 0.2);
+    @apply scale-105;
+  }
+
+  /* Text color utilities - using CSS custom properties */
+  .text-cyan {
+    @apply text-primary;
+  }
+
+  .text-neon-green {
+    color: #39ff14;
+  }
+
+  .text-text-muted {
+    @apply text-muted-foreground;
+  }
+
+  .bg-cyan {
+    @apply bg-primary;
+  }
+
+  .border-cyan {
+    @apply border-primary;
+  }
+
+  .hover\:text-cyan:hover {
+    @apply hover:text-primary;
+  }
+
+  .hover\:bg-cyan\/10:hover {
+    background-color: rgba(0, 212, 255, 0.1);
   }
 
   @media (min-width: 640px) {
