@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Cog } from "lucide-react";
 import IntroGate from "@/components/IntroGate";
+import { useMusic } from "@/contexts/MusicContext";
 
 /**
  * Home Page - 艰苦卓绝 Minecraft Server
@@ -24,6 +25,7 @@ const techStyle = {
 export default function Home() {
   const [scrollY, setScrollY] = useState(0);
   const [showGate, setShowGate] = useState(true);
+  const { isPlaying, toggleMusic } = useMusic();
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -44,7 +46,19 @@ export default function Home() {
       <nav className="fixed top-0 w-full z-50 border-b border-primary/10 bg-background/80 backdrop-blur-md">
         <div className="container flex items-center justify-between h-16">
           <div className="flex items-center gap-2">
-            <Cog className="w-6 h-6 text-primary animate-spin" style={{ animationDuration: "3s" }} />
+            <button
+              onClick={toggleMusic}
+              className="cursor-pointer hover:opacity-80 transition-opacity"
+              title={isPlaying ? "暂停音乐" : "播放音乐"}
+            >
+              <Cog
+                className="w-6 h-6 text-primary"
+                style={{
+                  animation: isPlaying ? "spin 3s linear infinite" : "none",
+                  animationDuration: "3s",
+                }}
+              />
+            </button>
             <h1 className="text-xl font-bold text-primary" style={displayStyle}>
               艰苦卓绝
             </h1>
