@@ -1,0 +1,13 @@
+{
+  "version": "7",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1777846369765,
+      "tag": "0000_lovely_lenny_balinger",
+      "breakpoints": true
+    }
+  ]
+}

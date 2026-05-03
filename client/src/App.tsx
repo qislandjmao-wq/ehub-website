@@ -9,8 +9,8 @@ import TurningPoint from "./pages/TurningPoint";
 import Milestones from "./pages/Milestones";
 import FeishengZheXingdong from "./pages/FeishengZheXingdong";
 
-
 function Router() {
+  // make sure to consider if you need authentication for certain routes
   return (
     <Switch>
       <Route path={"/"} component={Home} />
