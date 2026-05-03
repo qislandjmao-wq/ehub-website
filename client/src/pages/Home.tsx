@@ -28,6 +28,15 @@ export default function Home() {
   const { isPlaying, toggleMusic } = useMusic();
 
   useEffect(() => {
+    // 设置页面标题和描述
+    document.title = "艰苦卓绝 Minecraft 服务器官网 - E-hub 工业模组生存服";
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute('content', '艰苦卓绝是一个专注于 Create 工业模组的 Minecraft Java 服务器，提供硬核生存体验。飞升者行动周目已启动，加入 QQ 群 657699707 开始冒险！');
+    }
+  }, []);
+
+  useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -102,6 +111,9 @@ export default function Home() {
               </span>
             </div>
           </div>
+
+          {/* SEO Keywords Section */}
+          <h2 className="sr-only">Create 工业模组 Minecraft 服务器</h2>
 
           {/* Two-line Title */}
           <div className="mb-6">
