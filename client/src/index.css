@@ -202,29 +202,30 @@
 
   /* Glowing text effect */
   .text-glow {
-    @apply text-cyan;
+    @apply text-primary;
     text-shadow: 0 0 10px rgba(0, 212, 255, 0.5), 0 0 20px rgba(0, 212, 255, 0.3);
   }
 
   .text-glow-green {
-    @apply text-neon-green;
+    color: #39ff14;
     text-shadow: 0 0 10px rgba(57, 255, 20, 0.5), 0 0 20px rgba(57, 255, 20, 0.3);
   }
 
   /* Card with glow effect */
   .card-glow {
-    @apply bg-card border border-cyan/20 rounded-lg transition-all duration-300;
+    @apply bg-card border border-primary/20 rounded-lg transition-all duration-300;
     box-shadow: 0 0 20px rgba(0, 212, 255, 0.1), inset 0 0 20px rgba(0, 212, 255, 0.05);
   }
 
   .card-glow:hover {
-    @apply border-cyan/50;
+    @apply border-primary/50;
     box-shadow: 0 0 30px rgba(0, 212, 255, 0.2), inset 0 0 30px rgba(0, 212, 255, 0.1);
   }
 
   /* Button with tech effect */
   .btn-tech {
-    @apply px-6 py-3 bg-cyan text-dark-bg font-tech font-bold rounded-md transition-all duration-300 hover:shadow-lg;
+    @apply px-6 py-3 bg-primary text-background font-bold rounded-md transition-all duration-300 hover:shadow-lg;
+    font-family: 'Space Mono', monospace;
     box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
   }
 
@@ -233,33 +234,9 @@
     @apply scale-105;
   }
 
-  /* Text color utilities - using CSS custom properties */
-  .text-cyan {
-    @apply text-primary;
-  }
-
+  /* Color utilities using CSS variables */
   .text-neon-green {
     color: #39ff14;
-  }
-
-  .text-text-muted {
-    @apply text-muted-foreground;
-  }
-
-  .bg-cyan {
-    @apply bg-primary;
-  }
-
-  .border-cyan {
-    @apply border-primary;
-  }
-
-  .hover\:text-cyan:hover {
-    @apply hover:text-primary;
-  }
-
-  .hover\:bg-cyan\/10:hover {
-    background-color: rgba(0, 212, 255, 0.1);
   }
 
   @media (min-width: 640px) {
