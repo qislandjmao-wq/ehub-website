@@ -2,21 +2,27 @@ import { useEffect, useRef } from "react";
 
 interface CodeParticle {
   id: number;
-  char: string;
+  text: string;
   x: number;
   y: number;
   duration: number;
   delay: number;
   opacity: number;
+  speed: number;
 }
 
-const CHARACTERS = [
-  "0", "1", "A", "B", "C", "D", "E", "F",
-  "{", "}", "[", "]", "(", ")", "<", ">",
-  "=", "+", "-", "*", "/", "&", "|", "^",
-  "~", "!", "?", ".", ",", ";", ":",
-  "0x", "01", "FF", "00", "11", "AA", "BB",
-];
+// 生成更长的代码字符串
+function generateCodeString(): string {
+  const binaryChunks = [];
+  for (let i = 0; i < 3; i++) {
+    binaryChunks.push(
+      Math.random().toString(2).substring(2, 10) +
+      " " +
+      Math.random().toString(16).substring(2, 10)
+    );
+  }
+  return binaryChunks.join(" | ");
+}
 
 export default function HackerCodeEffect() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -42,20 +48,22 @@ export default function HackerCodeEffect() {
 
     // 创建新粒子
     const createParticle = () => {
-      const char = CHARACTERS[Math.floor(Math.random() * CHARACTERS.length)];
+      const text = generateCodeString();
       const x = Math.random() * canvas.width;
-      const y = -20;
-      const duration = 8000 + Math.random() * 8000; // 8-16 秒
-      const delay = Math.random() * 1000;
+      const y = -30;
+      const duration = 12000 + Math.random() * 10000; // 12-22 秒
+      const delay = Math.random() * 500;
+      const speed = 0.5 + Math.random() * 0.5; // 流速参差不齐
 
       particlesRef.current.push({
         id: idRef.current++,
-        char,
+        text,
         x,
         y,
         duration,
         delay,
-        opacity: 0.15 + Math.random() * 0.15, // 0.15-0.3 透明度
+        opacity: 0.12 + Math.random() * 0.18, // 0.12-0.3 透明度
+        speed,
       });
     };
 
@@ -65,11 +73,9 @@ export default function HackerCodeEffect() {
       // 清空 canvas
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // 定期创建新粒子
-      if (timestamp - lastParticleTime > 100 + Math.random() * 200) {
-        if (particlesRef.current.length < 60) {
-          createParticle();
-        }
+      // 持续创建新粒子（无限循环）
+      if (timestamp - lastParticleTime > 300 + Math.random() * 400) {
+        createParticle();
         lastParticleTime = timestamp;
       }
 
@@ -88,24 +94,27 @@ export default function HackerCodeEffect() {
         // 计算进度
         const progress = elapsed / particle.duration;
 
-        // 上下漂浮（正弦波）
-        const floatOffset = Math.sin(progress * Math.PI * 4) * 20;
-        const currentY = particle.y + progress * (canvas.height + 40) + floatOffset;
+        // 上下漂浮（正弦波）+ 向下移动
+        const floatOffset = Math.sin(progress * Math.PI * 3) * 15;
+        const currentY =
+          particle.y +
+          progress * (canvas.height + 60) * particle.speed +
+          floatOffset;
 
         // 透明度逐渐降低
         const alpha = particle.opacity * (1 - progress);
 
         // 绘制文字
-        ctx.font = "12px 'Space Mono', monospace";
+        ctx.font = "11px 'Space Mono', monospace";
         ctx.fillStyle = `rgba(0, 212, 255, ${alpha})`;
-        ctx.textAlign = "center";
+        ctx.textAlign = "left";
         ctx.textBaseline = "middle";
-        ctx.fillText(particle.char, particle.x, currentY);
+        ctx.fillText(particle.text, particle.x, currentY);
 
         // 添加发光效果
-        ctx.shadowColor = `rgba(0, 212, 255, ${alpha * 0.5})`;
-        ctx.shadowBlur = 8;
-        ctx.fillText(particle.char, particle.x, currentY);
+        ctx.shadowColor = `rgba(0, 212, 255, ${alpha * 0.6})`;
+        ctx.shadowBlur = 6;
+        ctx.fillText(particle.text, particle.x, currentY);
         ctx.shadowBlur = 0;
 
         return true;
