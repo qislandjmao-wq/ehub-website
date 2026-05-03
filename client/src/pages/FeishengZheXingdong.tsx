@@ -1,10 +1,11 @@
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useMemo } from "react";
+import { useEffect } from "react";
+import { trpc } from "@/lib/trpc";
 
 /**
  * Feisheng Zhe Xingdong Milestone Page
- * Displays BOSS kill records for the current season
+ * Displays BOSS kill records fetched from database
  */
 
 const displayStyle = {
@@ -13,57 +14,49 @@ const displayStyle = {
   letterSpacing: "0.05em",
 };
 
-const techStyle = {
-  fontFamily: "Space Mono, monospace",
-  letterSpacing: "0.02em",
-};
+const SEASON = "飞升者行动";
 
-interface BossKill {
-  date: string;
-  time: string;
-  players: string[];
-  boss: string;
+/** 将 UTC 时间转为北京时间并格式化为 M/D HH:mm */
+function formatKilledAt(date: Date): { dateStr: string; timeStr: string } {
+  const d = new Date(date);
+  // UTC+8
+  const offset = 8 * 60 * 60 * 1000;
+  const local = new Date(d.getTime() + offset);
+  const month = local.getUTCMonth() + 1;
+  const day = local.getUTCDate();
+  const hours = String(local.getUTCHours()).padStart(2, "0");
+  const minutes = String(local.getUTCMinutes()).padStart(2, "0");
+  return { dateStr: `${month}/${day}`, timeStr: `${hours}:${minutes}` };
 }
 
-const bossKills: BossKill[] = [
-  { date: "26/4", time: "19:32", players: ["muxuemeng", "shijuanren"], boss: "史莱姆王" },
-  { date: "26/4", time: "21:29", players: ["muxuemeng", "shijuanren"], boss: "克苏鲁之眼" },
-  { date: "4/29", time: "17:50", players: ["WeingPhonk", "Elysia0516"], boss: "死者之王" },
-  { date: "4/29", time: "23:22", players: ["shijuanren"], boss: "焰魔" },
-  { date: "4/29", time: "23:30", players: ["shijuanren"], boss: "下界合金巨兽" },
-  { date: "4/30", time: "20:45", players: ["shijuanren"], boss: "独眼巨鹿" },
-  { date: "4/30", time: "21:00", players: ["muxuemeng"], boss: "末影龙" },
-  { date: "4/30", time: "22:10", players: ["ercishichang", "ChongYue_WoWu", "muxuemeng"], boss: "克苏鲁之脑" },
-  { date: "4/30", time: "22:20", players: ["ChongYue_WoWu", "muxuemeng", "ercishichang", "shijuanren"], boss: "咒翼灵骸" },
-  { date: "5/1", time: "20:17", players: ["shijuanren"], boss: "乌姆纳塔" },
-  { date: "5/2", time: "16:18", players: ["shijuanren"], boss: "受火者" },
-  { date: "5/3", time: "17:11", players: ["muxuemeng", "shijuanren"], boss: "先驱者" },
-];
-
 export default function FeishengZheXingdong() {
-  // Calculate player participation
-  const playerStats = useMemo(() => {
-    const stats: Record<string, number> = {};
-    bossKills.forEach((kill) => {
-      kill.players.forEach((player) => {
-        stats[player] = (stats[player] || 0) + 1;
-      });
-    });
-    return stats;
+  const utils = trpc.useUtils();
+
+  const seedMutation = trpc.bossKills.seed.useMutation({
+    onSuccess: (data) => {
+      if (data.seeded) {
+        // 种子数据写入成功后，刷新列表和统计
+        utils.bossKills.list.invalidate({ season: SEASON });
+        utils.bossKills.topParticipant.invalidate({ season: SEASON });
+      }
+    },
+  });
+
+  const { data: kills = [], isLoading: killsLoading } = trpc.bossKills.list.useQuery(
+    { season: SEASON }
+  );
+
+  const { data: topParticipant, isLoading: topLoading } = trpc.bossKills.topParticipant.useQuery(
+    { season: SEASON }
+  );
+
+  // 首次加载时，如果数据库为空则自动写入种子数据
+  useEffect(() => {
+    seedMutation.mutate({ season: SEASON });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Find most participated player
-  const mostParticipatedPlayer = useMemo(() => {
-    let maxPlayer = "";
-    let maxCount = 0;
-    Object.entries(playerStats).forEach(([player, count]) => {
-      if (count > maxCount) {
-        maxCount = count;
-        maxPlayer = player;
-      }
-    });
-    return { player: maxPlayer, count: maxCount };
-  }, [playerStats]);
+  const isLoading = killsLoading || topLoading;
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -99,8 +92,8 @@ export default function FeishengZheXingdong() {
               飞升者行动
             </h1>
 
-            {/* Most Participated Player */}
-            {mostParticipatedPlayer.player && (
+            {/* Most Participated Player - Dynamic from DB */}
+            {!topLoading && topParticipant && (
               <div className="mb-8 p-6 rounded-lg border border-red-500/30 bg-red-500/5 text-center">
                 <p className="text-xs font-bold mb-4" style={{ color: "#ff0000", fontFamily: "Arial, sans-serif" }}>
                   参团最多
@@ -112,7 +105,7 @@ export default function FeishengZheXingdong() {
                     fontFamily: "Arial, sans-serif",
                   }}
                 >
-                  {mostParticipatedPlayer.player}
+                  {topParticipant.playerName}
                 </span>
               </div>
             )}
@@ -123,78 +116,85 @@ export default function FeishengZheXingdong() {
                 <span className="text-glow">BOSS击杀</span>
               </h2>
 
-              <div className="space-y-3">
-                {bossKills.map((kill, index) => (
-                  <div
-                    key={index}
-                    className="p-4 rounded-lg border border-primary/20 bg-primary/5 transition-all duration-300 hover:border-primary/50 hover:bg-primary/10"
-                  >
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                      {/* Date and Time */}
-                      <span
-                        className="text-sm"
-                        style={{
-                          color: "#a0afc0",
-                          fontFamily: "Space Mono, monospace",
-                        }}
+              {isLoading ? (
+                <div className="text-center py-12 text-muted-foreground">
+                  <p>加载中...</p>
+                </div>
+              ) : kills.length === 0 ? (
+                <div className="text-center py-12 text-muted-foreground">
+                  <p>暂无记录</p>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {kills.map((kill) => {
+                    const { dateStr, timeStr } = formatKilledAt(kill.killedAt);
+                    return (
+                      <div
+                        key={kill.id}
+                        className="p-4 rounded-lg border border-primary/20 bg-primary/5 transition-all duration-300 hover:border-primary/50 hover:bg-primary/10"
                       >
-                        {kill.date} {kill.time}
-                      </span>
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                          {/* Date and Time */}
+                          <span
+                            className="text-sm"
+                            style={{
+                              color: "#a0afc0",
+                              fontFamily: "Space Mono, monospace",
+                            }}
+                          >
+                            {dateStr} {timeStr}
+                          </span>
 
-                      {/* Players and Boss */}
-                      <div className="flex flex-wrap items-center gap-2">
-                        {/* Players */}
-                        <div className="flex flex-wrap gap-1">
-                          {kill.players.map((player, pIndex) => (
-                            <span key={pIndex}>
-                              <span
-                                style={{
-                                  color: "#00d4ff",
-                                  fontFamily: "Orbitron, sans-serif",
-                                  fontWeight: 600,
-                                }}
-                              >
-                                {player}
-                              </span>
-                              {pIndex < kill.players.length - 1 && (
-                                <span
-                                  style={{
-                                    color: "#a0afc0",
-                                    marginLeft: "0.25rem",
-                                    marginRight: "0.25rem",
-                                  }}
-                                >
-                                  、
+                          {/* Players and Boss */}
+                          <div className="flex flex-wrap items-center gap-2">
+                            {/* Players */}
+                            <div className="flex flex-wrap gap-1">
+                              {kill.players.map((player, pIndex) => (
+                                <span key={pIndex}>
+                                  <span
+                                    style={{
+                                      color: "#00d4ff",
+                                      fontFamily: "Orbitron, sans-serif",
+                                      fontWeight: 600,
+                                    }}
+                                  >
+                                    {player}
+                                  </span>
+                                  {pIndex < kill.players.length - 1 && (
+                                    <span
+                                      style={{
+                                        color: "#a0afc0",
+                                        marginLeft: "0.25rem",
+                                        marginRight: "0.25rem",
+                                      }}
+                                    >
+                                      、
+                                    </span>
+                                  )}
                                 </span>
-                              )}
+                              ))}
+                            </div>
+
+                            {/* Separator */}
+                            <span style={{ color: "#a0afc0" }}>击败了</span>
+
+                            {/* Boss */}
+                            <span
+                              style={{
+                                color: "#39ff14",
+                                fontFamily: "Orbitron, sans-serif",
+                                fontWeight: 600,
+                              }}
+                            >
+                              {kill.bossName}
                             </span>
-                          ))}
+                          </div>
                         </div>
-
-                        {/* Separator */}
-                        <span
-                          style={{
-                            color: "#a0afc0",
-                          }}
-                        >
-                          击败了
-                        </span>
-
-                        {/* Boss */}
-                        <span
-                          style={{
-                            color: "#39ff14",
-                            fontFamily: "Orbitron, sans-serif",
-                            fontWeight: 600,
-                          }}
-                        >
-                          {kill.boss}
-                        </span>
                       </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
 
             {/* Divider */}

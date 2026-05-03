@@ -1,6 +1,6 @@
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users } from "../drizzle/schema";
+import { InsertUser, InsertBossKill, InsertKillParticipant, users, bossKills, killParticipants } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -89,4 +89,87 @@ export async function getUserByOpenId(openId: string) {
   return result.length > 0 ? result[0] : undefined;
 }
 
-// TODO: add feature queries here as your schema grows.
+// ===== BOSS 击杀记录相关查询 =====
+
+/** 获取指定周目的所有 BOSS 击杀记录（按时间升序） */
+export async function getBossKillsBySeason(season: string) {
+  const db = await getDb();
+  if (!db) return [];
+
+  const kills = await db
+    .select()
+    .from(bossKills)
+    .where(eq(bossKills.season, season))
+    .orderBy(bossKills.killedAt);
+
+  // 为每条记录查询参团玩家
+  const result = await Promise.all(
+    kills.map(async (kill) => {
+      const participants = await db
+        .select()
+        .from(killParticipants)
+        .where(eq(killParticipants.killId, kill.id));
+      return {
+        ...kill,
+        players: participants.map((p) => p.playerName),
+      };
+    })
+  );
+
+  return result;
+}
+
+/** 统计指定周目中参团次数最多的玩家 */
+export async function getTopParticipantBySeason(season: string) {
+  const db = await getDb();
+  if (!db) return null;
+
+  // 关联 boss_kills 和 kill_participants，统计每个玩家的参团次数
+  const rows = await db
+    .select({
+      playerName: killParticipants.playerName,
+      count: sql<number>`COUNT(*)`.as("count"),
+    })
+    .from(killParticipants)
+    .innerJoin(bossKills, eq(killParticipants.killId, bossKills.id))
+    .where(eq(bossKills.season, season))
+    .groupBy(killParticipants.playerName)
+    .orderBy(sql`COUNT(*) DESC`)
+    .limit(1);
+
+  return rows.length > 0 ? rows[0] : null;
+}
+
+/** 批量插入 BOSS 击杀记录（包含参团玩家） */
+export async function insertBossKillWithPlayers(
+  kill: InsertBossKill,
+  players: string[]
+) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const [result] = await db.insert(bossKills).values(kill).$returningId();
+  const killId = result.id;
+
+  if (players.length > 0) {
+    await db.insert(killParticipants).values(
+      players.map((playerName) => ({ killId, playerName }))
+    );
+  }
+
+  return killId;
+}
+
+/** 检查指定周目是否已有数据 */
+export async function hasBossKillsForSeason(season: string): Promise<boolean> {
+  const db = await getDb();
+  if (!db) return false;
+
+  const rows = await db
+    .select({ id: bossKills.id })
+    .from(bossKills)
+    .where(eq(bossKills.season, season))
+    .limit(1);
+
+  return rows.length > 0;
+}
