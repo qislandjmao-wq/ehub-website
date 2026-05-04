@@ -25,7 +25,7 @@ const techStyle = {
 
 export default function Home() {
   const [scrollY, setScrollY] = useState(0);
-  const [showGate, setShowGate] = useState(true);
+  const [showGate, setShowGate] = useState(() => !sessionStorage.getItem("gate_opened"));
   const { isPlaying, toggleMusic } = useMusic();
   const { navigateTo } = useRoute();
 
@@ -46,6 +46,7 @@ export default function Home() {
 
   const handleGateComplete = useCallback(() => {
     setShowGate(false);
+    sessionStorage.setItem("gate_opened", "true");
   }, []);
 
   return (
