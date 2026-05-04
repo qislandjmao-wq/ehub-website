@@ -135,20 +135,21 @@ export default function FeishengZheXingdong() {
                         key={kill.id}
                         className="p-4 rounded-lg border border-primary/20 bg-primary/5 transition-all duration-300 hover:border-primary/50 hover:bg-primary/10"
                       >
-                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
                           {/* Date and Time */}
                           <span
-                            className="text-sm"
+                            className="text-sm flex-shrink-0"
                             style={{
                               color: "#a0afc0",
                               fontFamily: "Space Mono, monospace",
+                              whiteSpace: "nowrap",
                             }}
                           >
                             {dateStr} {timeStr}
                           </span>
 
                           {/* Players and Boss */}
-                          <div className="flex flex-wrap items-center gap-2">
+                          <div className="flex flex-wrap items-center gap-2 justify-end">
                             {/* Players */}
                             <div className="flex flex-wrap gap-1">
                               {kill.players.map((player, pIndex) => (
