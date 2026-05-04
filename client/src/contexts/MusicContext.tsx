@@ -10,7 +10,6 @@ const MusicContext = createContext<MusicContextType | undefined>(undefined);
 export function MusicProvider({ children }: { children: ReactNode }) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const autoplayBlockedRef = useRef(false);
   const hasInteractedRef = useRef(false);
 
   useEffect(() => {
@@ -23,63 +22,39 @@ export function MusicProvider({ children }: { children: ReactNode }) {
       audioRef.current = audio;
     }
 
-    // 立即尝试自动播放
-    const attemptAutoplay = async () => {
-      if (!audioRef.current) return;
-
+    // 监听用户交互事件
+    const handleUserInteraction = async () => {
+      if (hasInteractedRef.current || !audioRef.current) return;
+      
+      hasInteractedRef.current = true;
+      
       try {
-        const playPromise = audioRef.current.play();
-        
-        if (playPromise !== undefined) {
-          await playPromise;
-          setIsPlaying(true);
-          console.log("Autoplay succeeded");
-          return; // 自动播放成功，不需要监听交互
-        }
+        await audioRef.current.play();
+        setIsPlaying(true);
       } catch (error) {
-        // 自动播放被阻止
-        console.log("Autoplay blocked:", error);
-        autoplayBlockedRef.current = true;
+        console.warn("Failed to play music:", error);
+        setIsPlaying(false);
       }
-
-      // 如果自动播放失败，监听用户交互
-      setupInteractionListener();
+      
+      // 移除所有交互监听器
+      document.removeEventListener("click", handleUserInteraction);
+      document.removeEventListener("scroll", handleUserInteraction);
+      document.removeEventListener("keydown", handleUserInteraction);
+      document.removeEventListener("touchstart", handleUserInteraction);
     };
 
-    const setupInteractionListener = () => {
-      const handleUserInteraction = async () => {
-        if (hasInteractedRef.current || !audioRef.current) return;
-        
-        hasInteractedRef.current = true;
-        
-        try {
-          await audioRef.current.play();
-          setIsPlaying(true);
-          console.log("Music started after user interaction");
-        } catch (error) {
-          console.warn("Failed to play music after interaction:", error);
-          setIsPlaying(false);
-        }
-        
-        // 移除所有交互监听器
-        document.removeEventListener("click", handleUserInteraction);
-        document.removeEventListener("scroll", handleUserInteraction);
-        document.removeEventListener("keydown", handleUserInteraction);
-        document.removeEventListener("touchstart", handleUserInteraction);
-      };
-
-      // 添加交互监听器
-      document.addEventListener("click", handleUserInteraction);
-      document.addEventListener("scroll", handleUserInteraction);
-      document.addEventListener("keydown", handleUserInteraction);
-      document.addEventListener("touchstart", handleUserInteraction);
-    };
-
-    // 延迟一点执行自动播放尝试，确保 DOM 完全加载
-    const timeoutId = setTimeout(attemptAutoplay, 100);
+    // 添加交互监听器
+    document.addEventListener("click", handleUserInteraction);
+    document.addEventListener("scroll", handleUserInteraction);
+    document.addEventListener("keydown", handleUserInteraction);
+    document.addEventListener("touchstart", handleUserInteraction);
 
     return () => {
-      clearTimeout(timeoutId);
+      // 组件卸载时移除监听器
+      document.removeEventListener("click", handleUserInteraction);
+      document.removeEventListener("scroll", handleUserInteraction);
+      document.removeEventListener("keydown", handleUserInteraction);
+      document.removeEventListener("touchstart", handleUserInteraction);
     };
   }, []);
 
@@ -89,9 +64,7 @@ export function MusicProvider({ children }: { children: ReactNode }) {
         audioRef.current.pause();
         setIsPlaying(false);
       } else {
-        audioRef.current.play().catch((error) => {
-          console.warn("Failed to play music:", error);
-        });
+        audioRef.current.play();
         setIsPlaying(true);
       }
     }
