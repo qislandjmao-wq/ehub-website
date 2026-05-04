@@ -149,9 +149,9 @@ export default function FeishengZheXingdong() {
                           </span>
 
                           {/* Players and Boss */}
-                          <div className="flex flex-wrap items-center gap-2 justify-end">
+                          <div className="flex flex-col items-end gap-1">
                             {/* Players */}
-                            <div className="flex flex-wrap gap-1">
+                            <div className="flex flex-wrap gap-1 justify-end">
                               {kill.players.map((player, pIndex) => (
                                 <span key={pIndex}>
                                   <span
