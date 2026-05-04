@@ -107,7 +107,7 @@ function DoorPanel({ side }: { side: "left" | "right" }) {
   return (
     <div className="relative w-full h-full overflow-hidden">
       {/* 横向扫描线 */}
-      {Array.from({ length: 18 }).map((_, i) => (
+      {Array.from({ length: 9 }).map((_, i) => (
         <div
           key={i}
           className="absolute w-full"
@@ -120,7 +120,7 @@ function DoorPanel({ side }: { side: "left" | "right" }) {
       ))}
 
       {/* 竖向结构线 */}
-      {Array.from({ length: 4 }).map((_, i) => (
+      {Array.from({ length: 2 }).map((_, i) => (
         <div
           key={i}
           className="absolute h-full"
